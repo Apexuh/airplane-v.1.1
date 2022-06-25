@@ -1,0 +1,139 @@
+class AirplaneTwoColumns:
+    """  Airplane v.1.1"""
+    column = '......'
+
+    def __init__(self):
+        self.rows = int(input('Введите количество рядов в самолете. >>> : '))
+        self.total_seats = [AirplaneTwoColumns.column for i in range(self.rows)]
+        self.count_of_buyers = 0
+        self.count_of_tickets = 0
+        self.request = 0
+        self.count_of_passengers_without_places = 0
+
+    def __str__(self):
+        return str(self)
+
+    def empty_places(self):
+        return sum([len(list(filter(lambda x: x == '.', a))) for a in self.total_seats])
+
+    def seating(self):
+        # TODO проверить работу с большим количеством пассажиров
+        # TODO прогнать цикл с теми,кому места не хватило
+        # TODO сделать так, чтобы матрица менялась
+        # todo Выдача requests
+        print(f'''
+        Скажите сколько мест нужно забронировать, с какой стороны, а также ближе к проходу или к окну?
+        Формат ввода должен: "кол-во мест"  left(или right) aisle(или window). Например: 2 left aisle.
+        ''')
+        # print('Please input number of seats < or = 3')
+        input_tickets = input('>>> : ')
+        if len(input_tickets.split()) < 3:
+            print('Sorry, try again')
+        count, side, place = input_tickets.split()
+        count = int(count)
+        if 3 < count < 0:
+            print('Please input number of seats < or = 3')
+        self.request += 1
+        print(f'Request №{self.request}: places - {count}, side - {side}, preference - {place}')
+        counter = 0
+        for ind, air in enumerate(self.total_seats):
+            if side == 'left':
+                if place == 'aisle':
+                    d = air[3 - count: 3]
+                    if d == '.' * count:
+                        air = air[:3 - count] + 'V' * count + air[3:]
+                        a = [str(ind + 1) + str(chr(m + 64 + 1)) for m, n in enumerate(air[0:3]) if n == 'V']
+                        air = air[:3 - count] + 'X' * count + air[3:]
+                        self.total_seats[ind] = air
+                        st = ' '.join(a)
+                        print(f'Passengers can take seats: {st}')
+                        self.count_of_tickets += count
+                        return self.total_seats, self.count_of_tickets, self.request, self.count_of_passengers_without_places
+
+                    counter += 1
+                    if counter == len(self.total_seats):
+                        print('Cannot fulfill passengers requirements')
+                        self.count_of_passengers_without_places += count
+                        return self.total_seats, self.count_of_tickets, self.request, self.count_of_passengers_without_places
+
+                if place == 'window':
+                    d = air[: count]
+                    if d == '.' * count:
+                        air = 'V' * count + air[count:3] + air[3:]
+                        a = [str(ind + 1) + str(chr(m + 64 + 1)) for m, n in enumerate(air[0:3]) if n == 'V']
+                        air = 'X' * count + air[count:3] + air[3:]
+                        self.total_seats[ind] = air
+                        st = ' '.join(a)
+                        print(f'Passengers can take seats: {st}')
+                        self.count_of_tickets += count
+                        return self.total_seats, self.count_of_tickets, self.request, self.count_of_passengers_without_places
+
+                    counter += 1
+                    if counter == len(self.total_seats):
+                        print('Cannot fulfill passengers requirements')
+                        self.count_of_passengers_without_places += count
+                        return self.total_seats, self.count_of_tickets, self.request, self.count_of_passengers_without_places
+
+            if side == 'right':
+                if place == 'aisle':
+                    d = air[3: 3 + count]
+                    if d == '.' * count:
+                        air = air[:3] + 'V' * count + air[3 + count:]
+                        a = [str(ind + 1) + str(chr(m + 64 + 4)) for m, n in enumerate(air[3:]) if n == 'V']
+                        air = air[:3] + 'X' * count + air[3 + count:]
+                        self.total_seats[ind] = air
+                        st = ' '.join(a)
+                        print(f'Passengers can take seats: {st}')
+                        self.count_of_tickets += count
+                        return self.total_seats, self.count_of_tickets, self.request, self.count_of_passengers_without_places
+
+                    counter += 1
+                    if counter == len(self.total_seats):
+                        print('Cannot fulfill passengers requirements')
+                        self.count_of_passengers_without_places += count
+                        return self.total_seats, self.count_of_tickets, self.request, self.count_of_passengers_without_places
+
+                if place == 'window':
+                    d = air[-count:]
+                    if d == '.' * count:
+                        air = air[:3] + air[3: -count] + 'V' * count
+                        a = [str(ind + 1) + str(chr(m + 64 + 4)) for m, n in enumerate(air[3:]) if n == 'V']
+                        air = air[:3] + air[3: -count] + 'X' * count
+                        self.total_seats[ind] = air
+                        st = ' '.join(a)
+                        print(f'Passengers can take seats: {st}')
+                        self.count_of_tickets += count
+                        return self.total_seats, self.count_of_tickets, self.request, self.count_of_passengers_without_places
+
+                    counter += 1
+                    if counter == len(self.total_seats):
+                        print('Cannot fulfill passengers requirements')
+                        self.count_of_passengers_without_places += count
+                        return self.total_seats, self.count_of_tickets, self.request, self.count_of_passengers_without_places
+
+
+def main():
+    airplane = AirplaneTwoColumns()
+    choice = None
+    print('Добро пожаловать! ')
+    while choice != '0':
+        print \
+            (f'''
+            Свободных мест: {airplane.empty_places()} 
+            0 - Выход
+            1 - Заказать билеты
+            ''')
+        choice = input('>>> : ')
+        print()
+        if choice == '0':
+            print(f'Было приобретено {str(airplane.count_of_tickets)} билетов по {airplane.count_of_buyers} запросам')
+            print('До скорой встречи!')
+        elif choice == '1':
+            airplane.seating()
+            print('Пожалуйста, ознакомьтесь с планом самолета с учетом заказа билетов:')
+            [print(i[:3], '_', i[3:]) for i in airplane.total_seats]
+        else:
+            print('Попробуйте еще раз.')
+
+
+main()
