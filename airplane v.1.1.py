@@ -3,7 +3,7 @@ class AirplaneTwoColumns:
     column = '......'
 
     def __init__(self):
-        self.rows = int(input('Введите количество рядов в самолете. >>> : '))
+        self.rows = int(input('Enter the number of rows in the airplane. >>> : '))
         self.total_seats = [AirplaneTwoColumns.column for i in range(self.rows)]
         self.count_of_buyers = 0
         self.count_of_tickets = 0
@@ -17,13 +17,10 @@ class AirplaneTwoColumns:
         return sum([len(list(filter(lambda x: x == '.', a))) for a in self.total_seats])
 
     def seating(self):
-        # TODO проверить работу с большим количеством пассажиров
-        # TODO прогнать цикл с теми,кому места не хватило
-        # TODO сделать так, чтобы матрица менялась
-        # todo Выдача requests
+        #TODO проверка на ввод неверных значений
         print(f'''
-        Скажите сколько мест нужно забронировать, с какой стороны, а также ближе к проходу или к окну?
-        Формат ввода должен: "кол-во мест"  left(или right) aisle(или window). Например: 2 left aisle.
+        Just tell us how many seats you need to book, on which side, and also closer to the aisle or to the window?
+        The input format should be: "number of places" left(or right) aisle(or window). For example: 2 left aisle.
         ''')
         # print('Please input number of seats < or = 3')
         input_tickets = input('>>> : ')
@@ -115,25 +112,25 @@ class AirplaneTwoColumns:
 def main():
     airplane = AirplaneTwoColumns()
     choice = None
-    print('Добро пожаловать! ')
+    print('Welcome!')
     while choice != '0':
         print \
             (f'''
-            Свободных мест: {airplane.empty_places()} 
-            0 - Выход
-            1 - Заказать билеты
+            Empty places: {airplane.empty_places()} 
+            0 - Exit
+            1 - Order a ticket
             ''')
         choice = input('>>> : ')
         print()
         if choice == '0':
-            print(f'Было приобретено {str(airplane.count_of_tickets)} билетов по {airplane.count_of_buyers} запросам')
-            print('До скорой встречи!')
+            print(f'{str(airplane.count_of_tickets)} tickets were purchased for {airplane.count_of_buyers} requests')
+            print('Have a great day!')
         elif choice == '1':
             airplane.seating()
-            print('Пожалуйста, ознакомьтесь с планом самолета с учетом заказа билетов:')
+            print('Please look at the plan of the airplane after ordering tickets:')
             [print(i[:3], '_', i[3:]) for i in airplane.total_seats]
         else:
-            print('Попробуйте еще раз.')
+            print('Please try again.')
 
 
 main()
