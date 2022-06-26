@@ -26,8 +26,14 @@ class AirplaneTwoColumns:
         print(f'''
         Just tell us how many seats you need to book, on which side, and also closer to the aisle or to the window?
         The input format should be: "number of places" left(or right) aisle(or window). For example: 2 left aisle.
+        0 - Exit
         ''')
         input_tickets = input('>>> : ')
+        if input_tickets == '0':
+            print(f'{str(self.count_of_tickets)} tickets were purchased for {self.request} requests')
+            print('Have a great day!')
+            exit()
+
         if len(input_tickets.split()) == 3:
             count, side, place = input_tickets.split()
             count = int(count)
@@ -129,7 +135,7 @@ def main():
         choice = input('>>> : ')
         print()
         if choice == '0':
-            print(f'{str(airplane.count_of_tickets)} tickets were purchased for {airplane.count_of_buyers} requests')
+            print(f'{str(airplane.count_of_tickets)} tickets were purchased for {airplane.request} requests')
             print('Have a great day!')
         elif choice == '1':
             airplane.seating()
