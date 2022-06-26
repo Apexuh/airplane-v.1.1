@@ -25,7 +25,7 @@ class AirplaneTwoColumns:
     def seating(self):
         print(f'''
         Just tell us how many seats you need to book, on which side, and also closer to the aisle or to the window?
-        The input format should be: "number of places" left(or right) aisle(or window). For example: 2 left aisle.
+        The input format should be: "number of places"(1 to 3) left(or right) aisle(or window). For example: 2 left aisle.
         0 - Exit
         ''')
         input_tickets = input('>>> : ')
